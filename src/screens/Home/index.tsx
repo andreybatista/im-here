@@ -1,31 +1,34 @@
-import { Text, View, TextInput, TouchableOpacity, FlatList } from "react-native";
+import { useState } from 'react';
+import { Text, View, TextInput, TouchableOpacity, FlatList, Alert } from 'react-native';
 
-import { Participant } from "../../components/Participant";
+import { Participant } from '../../components/Participant';
 
-import { styles } from "./styles";
+import { styles } from './styles';
 
 export function Home() {
-  const participants = [
-    "Andrey",
-    "Noeme",
-    "Mini Noeme",
-    "Mini Andrey",
-    "Andrey2",
-    "Noeme2",
-    "Mini Noeme2",
-    "Mini Andrey2",
-    "Andrey3",
-    "Noeme3",
-    "Mini Noeme3",
-    "Mini Andrey3",
-  ]
+  const [participants, setParticipants] = useState<String[]>([])
+  const [participantName, setParticipantName] = useState('')
 
   function handleParticipantAdd() {
-    console.log('click')
+    if (participants.includes(participantName)) {
+      return Alert.alert('Participante já cadastrado', 'Já existe um participante na lista com esse nome.')
+    }
+
+    setParticipants(state => [...state, participantName])
+    setParticipantName('')
   }
 
   function handleParticipantRemove(name: string) {
-    console.log(`click para remove o participante ${name}`)
+    Alert.alert('Remover ', `Remover o participante ${name} ?`, [
+      {
+        text: 'Sim',
+        onPress: () => Alert.alert('Deletado!'),
+      },
+      {
+        text: 'Não',
+        style: 'cancel'
+      }
+    ])
   }
 
   return (
@@ -40,9 +43,11 @@ export function Home() {
 
       <View style={styles.form}>
         <TextInput
+          onChangeText={setParticipantName}
+          value={participantName}
           style={styles.input}
-          placeholder="Nome do Participante"
-          placeholderTextColor="#6B6B6B"
+          placeholder='Nome do Participante'
+          placeholderTextColor='#6B6B6B'
         />
 
         <TouchableOpacity style={styles.button} onPress={handleParticipantAdd}>
@@ -63,7 +68,7 @@ export function Home() {
           />
         )}
         showsVerticalScrollIndicator={false}
-        ListEmptyComponent={()=>(
+        ListEmptyComponent={() => (
           <Text style={styles.listEmptyText}>
             Ninguém chegou no evento ainda? Adicione participante a sua lista de presença.
           </Text>
