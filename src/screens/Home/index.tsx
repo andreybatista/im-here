@@ -6,7 +6,7 @@ import { Participant } from '../../components/Participant';
 import { styles } from './styles';
 
 export function Home() {
-  const [participants, setParticipants] = useState<String[]>([])
+  const [participants, setParticipants] = useState<string[]>([])
   const [participantName, setParticipantName] = useState('')
 
   function handleParticipantAdd() {
