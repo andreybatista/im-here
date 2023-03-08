@@ -3,31 +3,31 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#131016',
-    padding: 24
+    backgroundColor: "#131016",
+    padding: 24,
   },
   eventName: {
-    color: '#FFF',
+    color: "#FFF",
     fontSize: 24,
-    fontWeight: 'bold',
-    marginTop: 48
+    fontWeight: "bold",
+    marginTop: 48,
   },
   eventDate: {
-    color: '#6B6B6B',
+    color: "#6B6B6B",
     fontSize: 16,
   },
   form: {
-    width: '100%',
-    flexDirection: 'row',
+    width: "100%",
+    flexDirection: "row",
     gap: 12,
     marginTop: 36,
-    marginBottom: 42 
+    marginBottom: 42,
   },
   input: {
     height: 56,
-    backgroundColor: '#1F1E25',
+    backgroundColor: "#1F1E25",
     borderRadius: 5,
-    color: '#FFF',
+    color: "#FFF",
     padding: 16,
     fontSize: 16,
     flex: 1,
@@ -36,17 +36,62 @@ export const styles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: 5,
-    backgroundColor: '#31CF67',
-    alignItems: 'center',
-    justifyContent: 'center'
+    backgroundColor: "#31CF67",
+    alignItems: "center",
+    justifyContent: "center",
   },
   buttonText: {
-    color: '#FFF',
-    fontSize: 24
+    color: "#FFF",
+    fontSize: 24,
   },
   listEmptyText: {
-    color: '#FFF',
+    color: "#FFF",
     fontSize: 14,
-    textAlign: 'center'
-  }
-})
+    textAlign: "center",
+  },
+  backgroundModal: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#000",
+    opacity: 0.9,
+    position: "absolute",
+    top: 0,
+    left: 0,
+    height: "100%",
+    width: "100%",
+  },
+  containerModal: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  titleModal: {
+    color: "#FFF",
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  inputMobile: {
+    height: 56,
+    backgroundColor: "#1F1E25",
+    borderRadius: 5,
+    color: "#FFF",
+    padding: 16,
+    fontSize: 16,
+    width: "85%",
+    marginBottom: 10,
+  },
+  buttonModal: {
+    width: "85%",
+    height: 56,
+    borderRadius: 5,
+    backgroundColor: "#31CF67",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  buttonTextModal: {
+    color: "#FFF",
+    fontSize: 16,
+  },
+});
