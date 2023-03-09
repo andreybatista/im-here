@@ -13,6 +13,9 @@ export function Home() {
   const [modalVisible, setModalVisible] = useState(false);
 
   function handleParticipantAdd() {
+    if (participantName == "") {
+      return Alert.alert('Insira o nome do participante', 'O campo não pode estar em vazio.')
+    }
     if (participants.includes(participantName)) {
       return Alert.alert('Participante já cadastrado', 'Já existe um participante na lista com esse nome.')
     }
@@ -89,7 +92,7 @@ export function Home() {
       </Modal >
 
       <Text style={styles.eventDate}>
-        Sexta, 4 de Novembro de 2022.
+        {participants.length == 0 ? "Nem um participante até o momento." : `${participants.length} participante${participants.length > 1 ? "s" : ""} cadastrado${participants.length > 1 ? "s" : ""}`}
       </Text>
 
       <View style={styles.form}>
@@ -101,7 +104,7 @@ export function Home() {
           placeholderTextColor='#6B6B6B'
         />
 
-        <TouchableOpacity style={styles.button} onPress={handleParticipantAdd}>
+        <TouchableOpacity disabled={!participantName} style={[styles.button, !participantName && styles.disabledButton]} onPress={handleParticipantAdd}>
           <Text style={styles.buttonText}>
             +
           </Text>
