@@ -89,12 +89,12 @@ export const styles = StyleSheet.create({
     width: "85%",
     height: 56,
     borderRadius: 5,
-    backgroundColor: "#31CF67",
+    backgroundColor: "#31CF90",
     alignItems: "center",
     justifyContent: "center",
   },
   buttonTextModal: {
-    color: "#FFF",
+    color: "#000",
     fontSize: 16,
   },
 });

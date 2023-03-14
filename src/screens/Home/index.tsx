@@ -9,7 +9,7 @@ import { styles } from './styles';
 export function Home() {
   const [participants, setParticipants] = useState<string[]>([])
   const [participantName, setParticipantName] = useState('')
-  const [title, setTitle] = useState('Nome do Evento');
+  const [title, setTitle] = useState<string>('Nome do Evento');
   const [modalVisible, setModalVisible] = useState(false);
 
   function handleParticipantAdd() {
@@ -20,7 +20,10 @@ export function Home() {
       return Alert.alert('Participante já cadastrado', 'Já existe um participante na lista com esse nome.')
     }
 
-    setParticipants(state => [...state, participantName])
+    const newList = [...participants, participantName];
+    setParticipants(newList);
+    AsyncStorage.setItem('@i-m-here:participants-1.0.0', JSON.stringify(newList))
+      .catch((error) => console.error(error));
     setParticipantName('')
   }
 
@@ -28,7 +31,13 @@ export function Home() {
     Alert.alert('Remover ', `Remover o participante ${name} ?`, [
       {
         text: 'Sim',
-        onPress: () => setParticipants(state => state.filter(participant => participant !== name)),
+        onPress: () => {
+          setParticipants(state => state.filter(participant => participant !== name))
+          const newList = [...participants, participantName];
+          console.log(newList)
+          AsyncStorage.setItem('@i-m-here:participants-1.0.0', JSON.stringify(newList))
+            .catch((error) => console.error(error));
+        },
       },
       {
         text: 'Não',
@@ -37,18 +46,31 @@ export function Home() {
     ])
   }
 
-  useEffect(() => {
-    const loadTitle = async () => {
-      const savedTitle = await AsyncStorage.getItem('title');
-
-      setTitle(savedTitle || 'Nome do Evento');
-    };
-    loadTitle();
-  }, []);
-
-  const saveTitle = async () => {
-    await AsyncStorage.setItem('title', title);
+  function handleEditTitle(e: any) {
+    setTitle(e)
+    const newTitle = e;
+    AsyncStorage.setItem('@i-m-here:title-1.0.0', newTitle)
+      .catch((error) => console.error(error));
   };
+
+  useEffect(() => {
+    AsyncStorage.getItem('@i-m-here:participants-1.0.0')
+      .then((list) => {
+        if (list !== null) {
+          setParticipants(JSON.parse(list));
+        }
+      })
+      .catch((error) => console.error(error));
+
+
+    AsyncStorage.getItem('@i-m-here:title-1.0.0')
+      .then((savedTitle) => {
+        if (savedTitle !== null) {
+          setTitle(savedTitle);
+        }
+      })
+      .catch((error) => console.error(error));
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -58,38 +80,7 @@ export function Home() {
           {title == "" ? "Nome do Evento" : title}
         </Text>
       </TouchableOpacity>
-      <Modal
-        transparent={true}
-        visible={modalVisible}
-        animationType='fade'
-        onRequestClose={() => setModalVisible(false)}
-        style={{ position: 'relative' }}
-      >
-        <View style={styles.backgroundModal} />
 
-        <View style={styles.containerModal}>
-          <Text style={styles.titleModal}>
-            {title == '' ? 'Adicione um nome para o seu evento' : 'Altere o nome do seu evento'}
-          </Text> 
-          <TextInput
-            value={title}
-            style={styles.inputMobile}
-            onChangeText={setTitle} />
-
-          <TouchableOpacity
-            onPress={() => {
-              saveTitle();
-              setModalVisible(false)
-            }}
-            style={styles.buttonModal}
-          >
-            <Text style={styles.buttonTextModal}>
-              Salvar
-            </Text>
-          </TouchableOpacity>
-
-        </View>
-      </Modal >
 
       <Text style={styles.eventDate}>
         {participants.length == 0 ? "Nem um participante até o momento." : `${participants.length} participante${participants.length > 1 ? "s" : ""} cadastrado${participants.length > 1 ? "s" : ""}`}
@@ -130,6 +121,37 @@ export function Home() {
       />
 
 
+      <Modal
+        transparent={true}
+        visible={modalVisible}
+        animationType='fade'
+        onRequestClose={() => setModalVisible(false)}
+        style={{ position: 'relative' }}
+      >
+        <View style={styles.backgroundModal} />
+
+        <View style={styles.containerModal}>
+          <Text style={styles.titleModal}>
+            {title == '' ? 'Adicione um nome para o seu evento' : 'Altere o nome do seu evento'}
+          </Text>
+          <TextInput
+            value={title}
+            style={styles.inputMobile}
+            onChangeText={e => handleEditTitle(e)} />
+
+          <TouchableOpacity
+            onPress={() => {
+              setModalVisible(false)
+            }}
+            style={styles.buttonModal}
+          >
+            <Text style={styles.buttonTextModal}>
+              Salvar
+            </Text>
+          </TouchableOpacity>
+
+        </View>
+      </Modal >
     </View >
   )
 }
